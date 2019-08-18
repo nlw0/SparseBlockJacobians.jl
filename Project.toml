@@ -1,0 +1,4 @@
+name = "SparseBlockJacobians"
+uuid = "bab29e9e-1d6a-4d1b-8ece-3704072ec117"
+authors = ["Nicolau Leal Werneck <nwerneck@gmail.com>"]
+version = "0.1.0"

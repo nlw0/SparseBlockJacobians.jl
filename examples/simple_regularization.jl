@@ -4,19 +4,7 @@ using Printf
 using Plots
 pyplot()
 
-
-@inline foldlargs(op, x) = x
-@inline foldlargs(op, x1, x2, xs...) = foldlargs(op, op(x1, x2), xs...)
-
-function calculate_model!(out::Array{Float64}, funcs)
-    foldlargs(0, funcs...) do offset, (range, fun)
-        @inbounds for i in 1:range
-            out[i + offset] = fun(i)
-        end
-        offset + range
-    end
-    nothing
-end
+using SparseBlockJacobians
 
 function myresidue!(out, x, ref, Γ)
     sΓ = sqrt(Γ)
@@ -24,7 +12,7 @@ function myresidue!(out, x, ref, Γ)
     regularization(n) = sΓ * (x[n+1] - x[n])
     fitness(n) = x[n] - ref[n]
     blocks = ((N-1, regularization), (N, fitness))
-    calculate_model!(out, blocks)
+    update_residuals!(out, blocks)
     nothing
 end
 
