@@ -17,25 +17,26 @@ function update_residuals!(out::Array{Float64}, funcs)
 end
 
 function update_jacobian_values!(out, funcs)
-    foldlargs(0, funcs...) do offset, (range, block_size, fun)
-        for i in 1:range
-            out.nzval[1+block_size*i + offset:1+block_size*i + offset+block_size] .= fun(i)
+    foldlargs(0, funcs...) do val_offset, (range, block_size, fun)
+        for i in 0:(range-1)
+            out.nzval[1 + val_offset + block_size*i : 1 + val_offset + block_size*i + block_size-1] .= fun(i+1)
         end
-        offset + range
+        val_offset + range * block_size
     end
     nothing
 end
 
 function update_jacobian_indices!(out, funcs)
+    out.colptr[1] = 1
+
     colacc = 1
-    foldlargs(0, funcs...) do offset, (range, block_size, fun)
+    foldlargs((0,0), funcs...) do (col_offset, row_offset), (range, block_size, fun)
         for i in 0:(range-1)
-            display("$i, $(fun(i))")
-            out.rowval[1+block_size*i + offset:1+block_size*i + offset+block_size] .= fun(i)
-            out.colptr[1+i + offset:1+i + offset+block_size] .= colacc
+            out.rowval[1 + row_offset + block_size*i : 1 + row_offset + block_size*i+ block_size-1] .= fun(i+1)
             colacc += block_size
+            out.colptr[2+i+col_offset] = colacc
         end
-        offset + range
+        (col_offset + range, row_offset + range * block_size)
     end
     nothing
 end
