@@ -6,7 +6,5 @@ This project can be seen as an alternative to graph optimization tools such as g
 
 Figure 1 below shows an example of a regularization problem solved with increasing values for the regularization parameter, producing a classic "L-shaped curve" or "knee curve". The residues from the objective function were calculated with the help from our tool. See [examples/simple_regularization.jl](https://github.com/nlw0/SparseBlockJacobians.jl/blob/master/examples/simple_regularization.jl).
 
-<center>
-  <img src="https://raw.githubusercontent.com/nlw0/SparseBlockJacobians.jl/master/regularization-example.png" alt="Figure 1: Regularization problem example">
+<img src="https://raw.githubusercontent.com/nlw0/SparseBlockJacobians.jl/master/regularization-example.png" alt="Figure 1: Regularization problem example">
 Figure 1: Regularization problem example.
-</center>
